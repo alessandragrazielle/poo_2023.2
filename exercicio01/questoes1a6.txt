@@ -1,0 +1,34 @@
+1. Classe é a origem de um objeto, um modelo pelo qual ele vai ser criado; já o objeto é o elemento em si, com suas características e comportamentos. Por exemplo: uma receita é uma classe, já o bolo é um objeto.
+
+2. Atributos são as características de um objeto; os métodos são os seus comportamentos/ações. Por exemplo: 
+- Objeto: carro 
+- Atributos: cor, marca, placa
+- Métodos: acelerar, frear, abastecer
+
+3. 
+Peso - avaliação física, clínica
+Tipo de CNH - empresa de aluguel de carros
+Tipo Sanguíneo - hospitais
+Habilidade destra - sistema esportivo
+Percentual de gordura - avaliação física de uma academia
+Saldo em conta - banco
+Etinia - estudos na comunidade
+
+4.
+a - Seria interessante a classe Conta possuir apenas um atributo que esteja relacionado a um outro atributo de Pessoa, por exmplo, nome ou cpf.
+b - Sim, seria. Utilizaria um array para guardar as contas da classe Pessoa.
+
+5. Aluno, professor, coordenador, turma, disciplina
+
+6. Um jogo de Ludo
+- Jogador:
+Atributos: Nome, nível, quantidade de moedas, posição no ranking, número de vitórias
+Métodos: Fazer login na conta, ir para um jogo, sair do jogo, convidar amigo, comprar moedas
+
+- Peça
+Atributos: Cor, posição no tabuleiro
+Métodos: Andar as casas, verificar se chegou na casa final
+
+- Jogo
+Atributos: Quantidade de jogadores, duração
+Métodos: Iniciar jogo, verificar vitória
