@@ -12,7 +12,7 @@ Tipo Sanguíneo - hospitais
 Habilidade destra - sistema esportivo
 Percentual de gordura - avaliação física de uma academia
 Saldo em conta - banco
-Etinia - estudos na comunidade
+Etinia - sistema de uma universidade 
 
 4.
 a - Seria interessante a classe Conta possuir apenas um atributo que esteja relacionado a um outro atributo de Pessoa, por exmplo, nome ou cpf.
