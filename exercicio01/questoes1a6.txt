@@ -15,7 +15,7 @@ Saldo em conta - banco
 Etinia - sistema de uma universidade 
 
 4.
-a - Seria interessante a classe Conta possuir apenas um atributo que esteja relacionado a um outro atributo de Pessoa, por exmplo, nome ou cpf.
+a - Não, seria interessante a classe Conta possuir apenas um atributo que esteja relacionado a um outro atributo de Pessoa, por exmplo, nome ou cpf.
 b - Sim, seria. Utilizaria um array para guardar as contas da classe Pessoa.
 
 5. Aluno, professor, coordenador, turma, disciplina
