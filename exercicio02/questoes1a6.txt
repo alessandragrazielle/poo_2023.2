@@ -1,0 +1,26 @@
+1. Na tipagem estática o tipo deve ser informado explicitamente, não permitindo alterações depois que a variável é declarada. Já na dinâmica, o programa determina a tipagem de acordo com o que está sendo declarado, não é necessário que se informe explicitamente o tipo da variável
+
+2. Pois ela pode levar a erros de runtime, afetando a performace do código.
+
+3. Um exemplo em JavaScript:
+let value1 = 5;
+let value2 = "10";
+let sum = value1 + value2;
+console.log(sum);  // 510
+
+4. 
+#include <stdio.h>
+int main() {
+    int num = 10;
+    char letter = '5';
+    
+    num = num + letter;  // conversão implícita de char para int
+    
+    printf("Result: %d\n", num);  // O resultado será 63 (o valor ASCII de '5' é 53)
+    
+    return 0;
+}
+
+5. 
+
+6. Não, pois o tipo number engloba os tipos inteiros e de ponto flutuante. A linguagem lida com eles internamente e de forma segura.
