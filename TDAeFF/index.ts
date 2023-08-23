@@ -1,4 +1,4 @@
-/* enum Status {
+enum Status {
     DRAFT,
     PUBLISHED,
     DELETED
@@ -40,9 +40,9 @@ class Post{
 class RedeSocial{
     post: Post = new Post(1, 'new post', Status.DRAFT);
     
-    constructor(){  // quando o if está na aplicação, é necessário haver um constructor
+    constructor(){  
         if(this.post.status == Status.DRAFT){
-            if(this.post.text.trim().length > 0){ // o trim() remove os espaços em branco
+            if(this.post.text.trim().length > 0){ 
                 this.post.publish();
                 console.log('Successfully published text');
             } else{
@@ -54,7 +54,4 @@ class RedeSocial{
     }
 }
 
-const redeSocialInstance: RedeSocial = new RedeSocial(); // necessário, por causa do constryctor
-
-/*obs:
-- No TypeScript (e em JavaScript em geral), o código executável deve estar dentro de funções ou métodos */
+const redeSocialInstance: RedeSocial = new RedeSocial();
