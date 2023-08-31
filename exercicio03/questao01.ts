@@ -5,5 +5,3 @@ function parOuImpar(numero: number): boolean{
 
     return false;
 }
-
-console.log(parOuImpar(1000));
