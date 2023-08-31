@@ -6,4 +6,3 @@ function ehPar(numero: number){
 }
 
 let numerospares = numeros.filter(ehPar);
-console.log(numerospares);
