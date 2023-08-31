@@ -13,5 +13,3 @@ function primoOuNao(numero: number){
 
     return true;
 }
-
-console.log(primoOuNao(23));
