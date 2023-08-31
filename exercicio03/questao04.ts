@@ -12,4 +12,3 @@ function formatandoParaString(array: number[]): string {
 
     return stringfinal
 }
-console.log(formatandoParaString(array));
