@@ -24,13 +24,9 @@ class Jogador{
 
     toString(): string {
         return `
-        forca: ${this.forca}
+        força: ${this.forca}
         nivel: ${this.nivel}
-        pontosAtuais: ${this.pontosAtuais}
+        pontos atuais: ${this.pontosAtuais}
         `;
     }
 }
-
-let j1: Jogador = new Jogador(10, 3, 101);
-let j2: Jogador = new Jogador(10, 2, 100);
-
