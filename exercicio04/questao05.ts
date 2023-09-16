@@ -1,4 +1,4 @@
-/*class Conta {
+class Conta {
     numero: string;
     saldo: number;
 
@@ -35,7 +35,6 @@ c1.transferir(c2, 50);
 console.log(c1.consultarSaldo());
 console.log(c2.consultarSaldo());
 console.log(c3.consultarSaldo());
-*/
 
 /*
 a) os prints deram o resultade de 90. todas as contas estão apontando para o mesmo endereço de memória, consequentemente recebem os mesmos valores, e apenas o método sacar foi realizado.
