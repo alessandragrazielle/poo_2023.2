@@ -5,8 +5,8 @@ class Radio{
     }
 }
 
-//let r: Radio = new Radio();
-//r.volume = 10;
+let r: Radio = new Radio();
+r.volume = 10;
 
 // o erro ocorre porque há uma tentativa de inicialização errada, já que existe um construtor, a inicialização deve ocorrer no momento da instanciação, após o new
 
