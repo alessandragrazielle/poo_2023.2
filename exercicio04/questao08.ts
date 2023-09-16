@@ -13,20 +13,10 @@ class Equipamento{
     }
 
     inverte(): void{
-        this.ligado = !this.ligado; // o status atual sera inverso ao status anterior
+        this.ligado = !this.ligado; 
     }
 
     estaLigado(): boolean {
         return this.ligado
     }
 }
-
-let equi: Equipamento = new Equipamento(true);
-console.log(equi);
-
-equi.inverte();
-console.log(equi);
-
-equi.estaLigado();
-console.log(equi);
-
