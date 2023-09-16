@@ -33,12 +33,3 @@ class Conta {
         return true;
     }
 }
-
-let c1: Conta = new Conta('1', 100);
-let c2: Conta = new Conta('2', 100);
-console.log(c1.transferir(c2, 10));
-
-
-console.log(c1.consultarSaldo());
-console.log(c2.consultarSaldo());
-
