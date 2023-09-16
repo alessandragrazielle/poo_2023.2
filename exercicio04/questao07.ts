@@ -10,7 +10,6 @@ class Triangulo{
 
     ehTriangulo(): boolean{
         return (this.a > Math.abs(this.b - this.c) && this.a < this.b + this.c);
-        // o math.abs retorna o valor absoluto de um numero, desconsiderando se ele é positivo ou negativo; é como o |x|, por exemplo: |-5| = 5, da mesma forma math.abs(-5) = 5
     }
 
     ehIsoceles(): boolean{
@@ -39,6 +38,3 @@ class Triangulo{
         return (this.a != this.b  && this.a != this.c && this.b != this.c)
     }
 }
-
-let ex: Triangulo = new Triangulo(3, 4, 6); 
-console.log(ex.ehIsoceles());
