@@ -95,21 +95,3 @@ class Microblog{
         return todasPostagens;
     }
 }
-
-let m: Microblog = new Microblog();
-m.inserir(new Postagem(1, 'primeiraaa', 5));
-m.inserir(new Postagem(2, 'to triste :(', 60));
-m.inserir(new Postagem(3, 'eu amo o natin, mesmo sendo chata', 100));
-m.inserir(new Postagem(4, 'eu quero que ele chegue logoooo', 10));
-
-console.log(m.postagens);
-
-m.excluir(1);
-console.log(m.postagens);
-
-console.log(m.maisCurtida());
-
-m.curtir(4);
-console.log(m.postagens);
-
-console.log(m.toString());
