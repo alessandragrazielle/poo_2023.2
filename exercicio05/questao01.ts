@@ -1,4 +1,4 @@
-/*class Conta {
+class Conta {
     numero: string;
     saldo: number;
 
@@ -127,33 +127,3 @@ class Banco{
         return media;
     }
 }
-
-let b: Banco = new Banco();
-b.inserir(new Conta('1', 100));
-b.inserir(new Conta('2', 214));
-b.inserir(new Conta('2', 300)); // nao eh inserida
-b.inserir(new Conta('3', 30));
-let c4: Conta = new Conta('4', 50);
-let c5: Conta = new Conta('5', 500);
-b.inserir(c5);
-b.inserir(c4);
-
-console.log(b.contas);
-
-b.sacar('2', 14);
-b.sacar('100', 14);
-
-console.log(b.contas);
-
-b.transferir('1', '2', 100);
-b.transferir('1', '10', 10);
-
-console.log(b.contas);
-
-console.log(b.qtdContas());
-console.log(b.dinheiroTotal());
-console.log(b.mediaSaldo());
-
-b.excluir('1')
-console.log(b.contas);
-*/
