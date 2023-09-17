@@ -1,0 +1,159 @@
+/*class Conta {
+    numero: string;
+    saldo: number;
+
+    constructor(numero:string, saldo:number){
+        this.numero = numero;
+        this.saldo = saldo;
+    }
+
+    sacar(valor: number): boolean{
+        if(this.saldo - valor < 0){
+            return false
+        }
+
+        this.saldo = this.saldo - valor;
+        return true;
+    }
+
+    depositar(valor: number): void{
+        this.saldo = this.saldo + valor;
+    }
+
+    consultarSaldo(): number{
+        return this.saldo;
+    }
+
+    transferir(contaDestino: Conta, valor: number): boolean{
+        if(!this.sacar(valor)){
+            return false;
+        }
+        
+        contaDestino.depositar(valor);
+        return true;
+    }
+}
+
+
+class Banco{
+    contas: Conta[] = [];
+
+    inserir(c: Conta): void{
+        if(!this.consultar(c.numero)){
+            this.contas.push(c);
+        }
+    }
+
+    consultar(numero: string): Conta{
+        let contaProcurada!: Conta;
+        for(let c of this.contas){
+            if(c.numero == numero){
+                contaProcurada = c;
+                break;
+            }
+        }
+
+        return contaProcurada;
+    }
+
+    consultarIndice(numero: string): number{
+        let indice: number = -1;
+        for(let i:number = 0; i < this.contas.length; i++){
+            if(this.contas[i].numero == numero){
+                indice = i;
+                break;
+            }
+        }
+
+        return indice;
+    }
+
+    alterar(c: Conta): void{
+        let indice = this.consultarIndice(c.numero);
+        if(indice != -1){
+            this.contas[indice] = c;
+        }
+    }
+
+    excluir(numero: string): void{
+        let indice: number = this.consultarIndice(numero);
+        if(indice != -1){
+            for(let i:number = indice; i < this.contas.length; i++){
+                this.contas[i] = this.contas[i+1];
+            }
+
+            this.contas.pop
+        }
+    }
+
+    depositar(numero:string, valor:number){
+        let conta: Conta = this.consultar(numero)
+        if(conta != null){
+            conta.depositar(valor);
+        }
+    }
+
+    sacar(numero:string, valor:number){
+        let conta: Conta = this.consultar(numero)
+        if(conta != null){
+            conta.sacar(valor);
+        }
+    }
+
+    transferir(numeroCredito:string, numeroDebito:string, valor:number){
+        let contaCredito: Conta = this.consultar(numeroCredito)
+        let contaDebito: Conta = this.consultar(numeroDebito);
+        if(contaCredito != null && contaDebito != null){
+            contaDebito.transferir(contaCredito, valor);
+        }
+    }
+
+    qtdContas(): number{
+        return this.contas.length;
+    }
+
+    dinheiroTotal(): number{
+        let saldoTotal: number = 0;
+        for (let c of this.contas){
+            saldoTotal += c.saldo;
+        }
+
+        return saldoTotal;
+    }
+
+    mediaSaldo(): number{
+        let media: number = this.dinheiroTotal() / this.qtdContas();
+
+        return media;
+    }
+}
+
+let b: Banco = new Banco();
+b.inserir(new Conta('1', 100));
+b.inserir(new Conta('2', 214));
+b.inserir(new Conta('2', 300)); // nao eh inserida
+b.inserir(new Conta('3', 30));
+let c4: Conta = new Conta('4', 50);
+let c5: Conta = new Conta('5', 500);
+b.inserir(c5);
+b.inserir(c4);
+
+console.log(b.contas);
+
+b.sacar('2', 14);
+b.sacar('100', 14);
+
+console.log(b.contas);
+
+b.transferir('1', '2', 100);
+b.transferir('1', '10', 10);
+
+console.log(b.contas);
+
+console.log(b.qtdContas());
+console.log(b.dinheiroTotal());
+console.log(b.mediaSaldo());
+
+b.excluir('1')
+console.log(b.contas);
+*/
