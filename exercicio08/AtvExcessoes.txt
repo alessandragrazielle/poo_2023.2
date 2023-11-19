@@ -1,0 +1,31 @@
+2 - Execessões são classes especiais que contém informações sobre tipo de erro gerado. Os erros comuns podem resultar em um encerramento abrupto do programa ou em comportamentos inesperados, enquanto as exceções, apesar de fazerem o mesmo se não forem tratadas, oferecem uma maneira de lidar com os erros de maneira mais controlada.
+
+3 - Com o uso dos blocos try/catch
+
+4 - O código é envolvido em um bloco try {} e caso uma exceção seja lançada, capturamos e tratamos o erro no bloco catch {}.
+
+5 - A partir da herança; faz uma classe mãe das exceções e outras específicas para filtrar os erros, que herdam da classe mãe;
+exemplo: 
+    class AplicacaoError extends Error {
+        constructor(message: string) {
+            super(message);
+        }
+    }
+
+    class PerfilInexistenteError extends AplicacaoError {
+        constructor(message : string) {
+            super(message);
+        }
+    }
+
+
+6 - RangeError: ocorre quando uma variável ou parâmetro numérico está fora de seu intervalo válido
+- ReferenceError: ocorre quando tenta acessar uma variável ou função que não foi definida
+- SyntaxError: ocorre quando há um erro de sintaxe no código
+- TypeError: ocorre quando uma variável ou parâmetro não é de um tipo válido
+
+7 - Serve para liberar recursos, fechar conexões e arquivos e dar mensagens que ocorrem em todos os casos; é executado sempre: independente de exceção ou não;
+
+8 - Porque faz com que a aplicação execute suas funções mesmo em condições anormais, verificando se uma exceção é lançada, capturando e tratando o erro
+
+9 - Ambas as linguagens oferecem construções comuns para tratamento de exceções, como blocos try, catch, e finally. No entanto, uma diferença é que TypeScript permite a adição de tipos estáticos, que pode ajudar a capturar alguns erros durante o tempo de compilação, resultando em menos exceções em tempo de execução; diferente do JavaScript, que é dinamicamente tipado.
