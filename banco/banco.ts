@@ -1,4 +1,5 @@
-import * as fs from 'fs';
+// obs: as excessoes estão sendo tratadas no app
+import { ContaJaCadastradaError, ContaInexistenteError, PoupancaInvalidaError, SaldoInsuficienteError, ValorInvalidoError, AplicacaoError } from "./excecoes";
 
 class Conta {
     private _numero: string;
@@ -9,146 +10,153 @@ class Conta {
         this._saldo = saldo;
     }
 
-    get numero(): string{
-        return this._numero;
+    private validarvalor(valor: number): boolean {
+        if (valor <= 0 || isNaN(valor)) {
+            throw new ValorInvalidoError('Valor inválido!');
+        }
+
+        return true;
     }
 
-    get saldo(): number{
-        return this._saldo;
+    sacar(valor:number): void{
+        this.validarvalor(valor)
+        if(this._saldo < valor){
+            throw new SaldoInsuficienteError('Saldo insuficiente');
+        }
+    
+        this._saldo = this._saldo - valor;
     }
 
-    sacar(valor: number): void{
-        if (this._saldo >= valor) {
-			this._saldo = this._saldo - valor;
-		}
-    }
-
-    depositar(valor: number): void{
+    depositar(valor: number): void {
+        this.validarvalor(valor)
         this._saldo = this._saldo + valor;
     }
 
-    consultarSaldo(): number{
-        return this.saldo;
+    transferir(contaDestino: Conta, valor: number) {
+        this.sacar(valor);
+        contaDestino.depositar(valor);
     }
 
-    transferir(contaDestino: Conta, valor: number): void{
-        this.sacar(valor)
-        contaDestino.depositar(valor);
+    get saldo(): number {
+        return this._saldo;
+    }
+
+    get numero(): string {
+        return this._numero;
     }
 }
 
-class Poupanca extends Conta{
-    private _taxaJuros: number;
-    constructor(numero:string, saldo:number, taxa:number){
+
+class Poupanca extends Conta {
+    private _taxaDejuros: number;
+
+    constructor(numero: string, saldo: number, taxaDeJuros: number) {
         super(numero, saldo);
-        this._taxaJuros = taxa;
+        this._taxaDejuros = taxaDeJuros;
     }
 
-    get taxaJuros(): number {
-        return this._taxaJuros
+    get taxaDeJuros(): number {
+        return this._taxaDejuros;
     }
 
-    renderJuros(): void {
-        this.depositar(this.saldo * this._taxaJuros/100);
+    renderJuros() {
+        let saldo = this.saldo;
+        this.depositar(saldo * this.taxaDeJuros / 100);
     }
 }
 
 class ContaImposto extends Conta {
     private _taxaDeDesconto: number;
+
     constructor(numero: string, saldo: number, taxaDeDesconto: number) {
         super(numero, saldo);
         this._taxaDeDesconto = taxaDeDesconto;
     }
 
-    get taxaDesconto(): number{
-        return this._taxaDeDesconto;
+    sacar(valor: number) {
+        let valorTotal = valor + valor * this._taxaDeDesconto / 100;
+        super.sacar(valorTotal);
     }
-    
-    sacar(valor: number){
-       let valorTotal = valor + valor*this._taxaDeDesconto/100;
-       super.sacar(valorTotal);
+
+    get taxaDeDesconto(): number{
+        return this._taxaDeDesconto
     }
 }
 
-class Banco{
+class Banco {
     private _contas: Conta[] = [];
-    private CAMINHO_ARQUIVO: string = './banco/contas.txt';
 
-    inserir(c: Conta): void{
-        if(!this.consultar(c.numero)){
-            this._contas.push(c);
-        }
-    }
+ 
+    inserir(conta: Conta): void {
+        try {
+            this.consultar(conta.numero);
+            throw new ContaJaCadastradaError('Conta já cadastrada!');
+        } catch (e: any) {
+            if (e instanceof ContaInexistenteError) {
+                this._contas.push(conta);
+            } else if (e instanceof ContaJaCadastradaError){
+                console.log(e.message);
+            }
+        }        
+    }    
 
     consultar(numero: string): Conta{
         let contaProcurada!: Conta;
         for(let c of this._contas){
             if(c.numero == numero){
                 contaProcurada = c;
-                break;
             }
+        }
+
+        if (!contaProcurada){
+            throw new ContaInexistenteError('Essa conta não existe, por favor, tente outra!')
         }
 
         return contaProcurada;
     }
 
     private consultarIndice(numero: string): number{
-        let indice: number = -1;
-        for(let i:number = 0; i < this._contas.length; i++){
+        let indiceProcurado: number = -1;
+        for(let i = 0; i < this._contas.length; i++){
             if(this._contas[i].numero == numero){
-                indice = i;
-                break;
+                indiceProcurado = i;
             }
         }
 
-        return indice;
-    }
-
-    alterar(c: Conta): void{
-        let indice = this.consultarIndice(c.numero);
-        if(indice != -1){
-            this._contas[indice] = c;
+        if(indiceProcurado == -1){
+            throw new ContaInexistenteError('Essa conta não existe, por favor, tente outra!')
         }
+    
+        return indiceProcurado;
     }
 
-    excluir(numero: string): void{
-        let indice: number = this.consultarIndice(numero);
-        if(indice != -1){
-            for(let i:number = indice; i < this._contas.length; i++){
-                this._contas[i] = this._contas[i+1];
-            }
-
-            this._contas.pop
-        }
+    alterar(conta: Conta): void {
+        let indice: number = this.consultarIndice(conta.numero);
+        this._contas[indice] = conta;
     }
 
-    depositar(numero:string, valor:number){
-        let conta: Conta = this.consultar(numero)
-        if(conta != null){
-            conta.depositar(valor);
-        }
+    depositar(numero: string, valor: number): void {
+        let indice = this.consultarIndice(numero);
+        this._contas[indice].depositar(valor);
     }
 
-    sacar(numero:string, valor:number){
-        let conta: Conta = this.consultar(numero)
-        if(conta != null){
-            conta.sacar(valor);
-        }
+    sacar(numero: string, valor: number): void {
+        let indice = this.consultarIndice(numero);
+        this._contas[indice].sacar(valor);
     }
 
-    transferir(numeroCredito:string, numeroDebito:string, valor:number){
-        let contaCredito: Conta = this.consultar(numeroCredito)
+    transferir(numeroDebito: string, numeroCredito: string, valor: number): void {
+        let contaCredito: Conta = this.consultar(numeroCredito);
         let contaDebito: Conta = this.consultar(numeroDebito);
-        if(contaCredito != null && contaDebito != null){
-            contaDebito.transferir(contaCredito, valor);
-        }
+        contaDebito.transferir(contaCredito, valor);
     }
 
-    renderJuros(numero:string){
-        let conta: Conta = this.consultar(numero);
-        if(conta instanceof Poupanca){
-            conta.renderJuros()
+    excluir(numero: string): void {
+        let indice: number = this.consultarIndice(numero);
+        for (var i = indice; i < this._contas.length; i++) {
+            this._contas[i] = this._contas[i + 1];
         }
+        this._contas.pop();
     }
 
     qtdContas(): number{
@@ -170,81 +178,42 @@ class Banco{
         return media;
     }
 
-    exibirConta(numero:string): string{
-        let conta: string = '';
-        let indice: number = this.consultarIndice(numero);
-        conta = `Número: ${this._contas[indice].numero} - Saldo: ${this._contas[indice].saldo.toFixed(2)}`
+    renderJuros(numero: string): void {
+        let contaProcurada: Conta = this.consultar(numero);
+        
+        if (!(contaProcurada instanceof Poupanca)) {
+           throw new PoupancaInvalidaError('A conta não é uma poupança!');
+        } 
 
-        return conta;
+        contaProcurada.renderJuros();
     }
 
-    public carregarDeArquivo() {
-		const arquivo: string = fs.readFileSync(this.CAMINHO_ARQUIVO, 'utf-8');
-		//const linhas: string[] = arquivo.split('\n');
-		const linhas: string[] = arquivo.split('\r\n');
-		console.log("Iniciando leitura de arquivo");
-
-		for (let i: number = 0; i < linhas.length; i++) {
-			let linhaConta: string[] = linhas[i].split(";");
-			let conta!: Conta;
-			let tipo: string  = linhaConta[2];
-			if (tipo == 'C') {
-				conta = new Conta(linhaConta[0], parseFloat(linhaConta[1]));
-			} else if (tipo == 'CP') {
-				conta = new Poupanca(linhaConta[0], parseFloat(linhaConta[1]),parseFloat(linhaConta[3]));
-			} else if (tipo == 'CI') {
-				conta = new ContaImposto(linhaConta[0], parseFloat(linhaConta[1]),parseFloat(linhaConta[3]));
-			}
-
-			this.inserir(conta);
-			console.log(`Conta ${conta.numero} carregada`);
-		}
-
-		linhas.forEach(linha => {
-			let linhaConta: string[] = linha.split(";");
-			let conta!: Conta;
-			let tipo: string  = linhaConta[2];
-			if (tipo == 'C') {
-				conta = new Conta(linhaConta[0], parseFloat(linhaConta[1]));
-			} else if (tipo == 'CP') {
-				conta = new Poupanca(linhaConta[0], parseFloat(linhaConta[1]),parseFloat(linhaConta[3]));
-			} else if (tipo == 'CI') {
-				conta = new ContaImposto(linhaConta[0], parseFloat(linhaConta[1]),parseFloat(linhaConta[3]));
-			}
-
-			this.inserir(conta);
-			console.log(`Conta ${conta.numero} carregada`);
-			
-
-
-		});
-		console.log("fim do arquivo")
-
-	}
-
-	public salvarEmArquivo() {
-		console.log("Iniciando a gravação de contas em arquivo.")
-		let stringContas: string = "";
-		let linha: string = "";
-
-		for (let conta of this._contas) {
-			if (conta instanceof Poupanca) {
-				linha = `${conta.numero};${conta.saldo};CP;${conta.taxaJuros}\r\n`;
-			} else if ((conta instanceof ContaImposto)) {
-				linha = `${conta.numero};${conta.saldo};CI;${conta.taxaDesconto}\r\n`;
-			} else {
-				linha = `${conta.numero};${conta.saldo};C\r\n`;
-			}
-
-			stringContas += linha;
-		}
-		//deleta os últimos \r\n da string que vai pro arquivo, evitando que grave uma linha vazia
-		stringContas = stringContas.slice(0,stringContas.length-2);
-
-		fs.writeFileSync(this.CAMINHO_ARQUIVO, stringContas,'utf-8');
-		console.log("Contas salvas em arquivo.")
-	}
-
+    exibirConta(numero: string): string {
+        let contaString: string = '';
+        let indice: number = this.consultarIndice(numero);
+        let conta: Conta = this._contas[indice];
+    
+        contaString += `Número: ${conta.numero} - `;
+    
+        if (conta instanceof Poupanca) {
+            contaString += `Saldo: ${conta.saldo.toFixed(2)} - Taxa de Juros: ${conta.taxaDeJuros}%`;
+        } else if (conta instanceof ContaImposto) {
+            contaString += `Saldo: ${conta.saldo.toFixed(2)} - Taxa de Desconto: ${conta.taxaDeDesconto}%`;
+        } else {
+            contaString += `Saldo: ${conta.saldo.toFixed(2)}`;
+        }
+    
+        return contaString;
+    }
+    
 }
 
-export {Conta, Banco, Poupanca, ContaImposto}
+
+export {Conta, Banco, Poupanca, ContaImposto }
+//c1.transferir(c2, 1000);
+//c2.transferir(c1, -50)
+
+//b.transferir('2', '1', 500)
+//b.transferir('2', '1', -50)
+
+//b.depositar('1', -1000)
