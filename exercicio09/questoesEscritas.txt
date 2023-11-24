@@ -1,0 +1,8 @@
+questao 02 -
+1. Desconsiderar a operação: não há certeza se a operação foi realizada ou não
+2. Exibir mensagem de erro: ficamos atrelados à interface de texto, a mensagem provavelmente não seria notada na utilização de uma interface gráfica;
+3. Retornar um código de erro: é considerada uma má prática, pode levar à mudança do tipo de retorno do método
+
+questao 04 - Ocorreu o erro criado na exceção de saldo insuficiente e a operação de transferir não foi executada
+
+questao 05 - sim, o lançamento da excessão foi de conta até banco e app, tornando um método confiável para ser implantado
