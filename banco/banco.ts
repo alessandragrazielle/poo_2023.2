@@ -1,5 +1,5 @@
 // obs: as excessoes estão sendo tratadas no app
-import { ContaJaCadastradaError, ContaInexistenteError, PoupancaInvalidaError, SaldoInsuficienteError, ValorInvalidoError, AplicacaoError } from "./excecoes";
+import {ContaJaCadastradaError, ContaInexistenteError, PoupancaInvalidaError, SaldoInsuficienteError, ValorInvalidoError} from "./excecoes";
 
 class Conta {
     private _numero: string;
@@ -7,28 +7,38 @@ class Conta {
 
     constructor(numero:string, saldo:number){
         this._numero = numero;
-        this._saldo = saldo;
+        this._saldo = 0; // o saldo só será incrementado com depósito
+        this.validarEntrada(numero);
     }
 
-    private validarvalor(valor: number): boolean {
+    private validarEntrada(entradaStr: string): boolean{ // questao 15
+        let entrada: number = parseFloat(entradaStr);
+        if (entrada <= 0 || isNaN(entrada) || entrada == null) {
+            throw new ValorInvalidoError('Valor inválido.');
+        }
+
+        return true;
+    }
+
+    private validarvalor(valor: number): boolean { // questao 11
         if (valor <= 0 || isNaN(valor)) {
-            throw new ValorInvalidoError('Valor inválido!');
+            throw new ValorInvalidoError('Valor inválido.');
         }
 
         return true;
     }
 
     sacar(valor:number): void{
-        this.validarvalor(valor)
-        if(this._saldo < valor){
-            throw new SaldoInsuficienteError('Saldo insuficiente');
+        this.validarvalor(valor) // questao 06 e 10
+        if(this._saldo < valor){ // questao 03
+            throw new SaldoInsuficienteError('Saldo insuficiente.');
         }
     
         this._saldo = this._saldo - valor;
     }
 
     depositar(valor: number): void {
-        this.validarvalor(valor)
+        this.validarvalor(valor) // questao 06 e 10
         this._saldo = this._saldo + valor;
     }
 
@@ -88,17 +98,22 @@ class Banco {
 
  
     inserir(conta: Conta): void {
-        try {
-            this.consultar(conta.numero);
-            throw new ContaJaCadastradaError('Conta já cadastrada!');
-        } catch (e: any) {
-            if (e instanceof ContaInexistenteError) {
-                this._contas.push(conta);
-            } else if (e instanceof ContaJaCadastradaError){
-                console.log(e.message);
-            }
-        }        
+        if(this.existeConta(conta.numero)){
+            throw new ContaJaCadastradaError(`Conta já cadastrada: ${conta.numero}.`); // questao 13 (alterada)
+        }
+
+        this._contas.push(conta);
     }    
+
+    private existeConta(numero: string): boolean{
+        for(let c of this._contas){
+            if(c.numero == numero){
+                return true
+            }
+        }
+
+        return false
+    }
 
     consultar(numero: string): Conta{
         let contaProcurada!: Conta;
@@ -108,8 +123,8 @@ class Banco {
             }
         }
 
-        if (!contaProcurada){
-            throw new ContaInexistenteError('Essa conta não existe, por favor, tente outra!')
+        if (!contaProcurada){ // questao 08
+            throw new ContaInexistenteError('Essa conta não existe, por favor, tente outra.')
         }
 
         return contaProcurada;
@@ -123,29 +138,29 @@ class Banco {
             }
         }
 
-        if(indiceProcurado == -1){
-            throw new ContaInexistenteError('Essa conta não existe, por favor, tente outra!')
+        if(indiceProcurado == -1){ // questao 08
+            throw new ContaInexistenteError('Essa conta não existe, por favor, tente outra.')
         }
     
         return indiceProcurado;
     }
 
-    alterar(conta: Conta): void {
+    alterar(conta: Conta): void { // questao 09
         let indice: number = this.consultarIndice(conta.numero);
         this._contas[indice] = conta;
     }
 
-    depositar(numero: string, valor: number): void {
+    depositar(numero: string, valor: number): void { // questao 09
         let indice = this.consultarIndice(numero);
         this._contas[indice].depositar(valor);
     }
 
-    sacar(numero: string, valor: number): void {
+    sacar(numero: string, valor: number): void { // questao 09
         let indice = this.consultarIndice(numero);
         this._contas[indice].sacar(valor);
     }
 
-    transferir(numeroDebito: string, numeroCredito: string, valor: number): void {
+    transferir(numeroDebito: string, numeroCredito: string, valor: number): void { // questao 09
         let contaCredito: Conta = this.consultar(numeroCredito);
         let contaDebito: Conta = this.consultar(numeroDebito);
         contaDebito.transferir(contaCredito, valor);
@@ -178,11 +193,11 @@ class Banco {
         return media;
     }
 
-    renderJuros(numero: string): void {
+    renderJuros(numero: string): void { // questao 09
         let contaProcurada: Conta = this.consultar(numero);
         
-        if (!(contaProcurada instanceof Poupanca)) {
-           throw new PoupancaInvalidaError('A conta não é uma poupança!');
+        if (!(contaProcurada instanceof Poupanca)) { // questao 12
+           throw new PoupancaInvalidaError('A conta não é uma poupança.');
         } 
 
         contaProcurada.renderJuros();
@@ -208,12 +223,4 @@ class Banco {
     
 }
 
-
 export {Conta, Banco, Poupanca, ContaImposto }
-//c1.transferir(c2, 1000);
-//c2.transferir(c1, -50)
-
-//b.transferir('2', '1', 500)
-//b.transferir('2', '1', -50)
-
-//b.depositar('1', -1000)
