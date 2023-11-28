@@ -1,34 +1,34 @@
-class AplicacaoError extends Error{
+class AplicacaoError extends Error{ // questao 07
     constructor(message:string){
         super(message);
     }
 }
 
-class ContaInexistenteError extends AplicacaoError{
+class ContaInexistenteError extends AplicacaoError{ // questao 07
     constructor(message:string){
         super(message);
     }
 }
 
-class ContaJaCadastradaError extends AplicacaoError{
+class SaldoInsuficienteError extends AplicacaoError{ // questao 07
     constructor(message:string){
         super(message);
     }
 }
 
-class SaldoInsuficienteError extends AplicacaoError{
+class ValorInvalidoError extends AplicacaoError{ // questao 10
     constructor(message:string){
         super(message);
     }
 }
 
-class ValorInvalidoError extends AplicacaoError{
+class PoupancaInvalidaError extends Error{ // questao 12
     constructor(message:string){
         super(message);
     }
 }
 
-class PoupancaInvalidaError extends Error{
+class ContaJaCadastradaError extends AplicacaoError{ // questao 13
     constructor(message:string){
         super(message);
     }
