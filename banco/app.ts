@@ -6,8 +6,8 @@ let input = prompt();
 let b: Banco = new Banco();
 let opcao: string = '';
 
-do {
-    try {
+do {  
+    try { // questao 14
         console.log('\nBem vindo! \nDigite uma opção: ');
         console.log('1 - Cadastrar 2 - Consultar 3 - Sacar\n' +
             '4 - Depositar 5 - Excluir 6 - Transferir\n' +
@@ -54,11 +54,11 @@ do {
 console.log("Aplicação encerrada");
 
 function inserir(): void {
-    console.log('\ncadastrar conta\n');
+    console.log('\nCadastrar conta\n');
     let numero: string = input('Digite o numero da conta: ');
     let conta!: Conta;
 
-    let op: string = input('Você deseja criar uma conta, poupança ou conta imposto? c/p/i ').toLowerCase();
+    let op: string = input('Você deseja criar uma conta, poupança ou conta imposto? (c/p/i) ').toLowerCase();
     if (op == 'c') {
         conta = new Conta(numero, 0);
     } else if (op == 'p') {
